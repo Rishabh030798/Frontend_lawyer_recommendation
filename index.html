@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lawyer API Client</title>
+</head>
+<body>
+
+    <h1>Lawyer API Client</h1>
+
+    <label for="caseDetails">Case Details:</label>
+    <input type="text" id="caseDetails" placeholder="Enter case details">
+
+    <button onclick="searchLawyer()">Search</button>
+
+    <div id="resultSection">
+        <h2>API Response</h2>
+        <pre id="apiResponse"></pre>
+    </div>
+
+    <script>
+        function searchLawyer() {
+            const caseDetails = document.getElementById('caseDetails').value;
+
+            // Make a POST request to the Flask API
+            fetch('https://lawyer-recommendation.onrender.com/lawyer_api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    case_details: caseDetails,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update the result section with the API response
+                document.getElementById('apiResponse').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('apiResponse').textContent = 'Error occurred. Please try again.';
+            });
+        }
+    </script>
+
+</body>
+</html>
